@@ -1,0 +1,84 @@
+:root{
+  --phone-w:min(418px,calc((100dvh - 170px)/2.0865),calc((100vw - 104px)/2));
+  --ink:#0B132B;--sand:#F5F2EB;--coral:#E4546F;--coral-deep:#C43A58;--mint:#58DCC3;--teal:#146C7E;--leaf:#5CCB95;
+  --sans:"Jua","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --display:"Rubik","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--sand);color:var(--ink);font-family:var(--sans);word-break:keep-all;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.reset{font-size:15px;color:#59617a;text-decoration:underline;text-underline-offset:4px;padding:10px 0;min-height:44px}
+.reset:hover{color:var(--ink)}
+
+/* ── 폰 틀: aboardfit.com 목업(.phone/.screen/.phone-rim) 그대로 ── */
+.demo{display:flex;flex-direction:column;align-items:center;flex:none}
+.phone{position:relative;isolation:isolate;container-type:inline-size;display:grid;width:var(--phone-w);padding:0;background:transparent}
+.phone::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:16.66667cqw;background:#0B132B;pointer-events:none;
+  box-shadow:0 0 0 2px rgba(245,242,235,.18),0 40px 80px -30px rgba(0,0,0,.7),inset 0 0 0 2px #222c4d}
+.screen{position:relative;width:93.33333%;height:auto;aspect-ratio:390/844;margin:3.33333cqw auto;border-radius:13.33333cqw;overflow:hidden;background:#0B132B;clip-path:inset(0 round 13.33333cqw);container-type:inline-size;--phone-status-height:5.21327%}
+.phone-rim{position:absolute;inset:calc(3.33333cqw - 1px);z-index:2;border:3px solid #0B132B;border-radius:calc(13.33333cqw + 1px);pointer-events:none}
+.phone-status{position:absolute;z-index:2;inset:0 0 auto;height:var(--phone-status-height);display:grid;grid-template-columns:1fr 22.5641cqw 1fr;align-items:center;padding:0;background:#64CFC1;color:#0B132B;font:600 4.35897cqw/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums;pointer-events:none;user-select:none}
+.phone-status-clock{grid-column:1;justify-self:center}
+.phone-status-camera{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22.5641cqw;height:6.15385cqw;border-radius:999px;background:#000}
+.phone-status-icons{grid-column:3;justify-self:center;display:flex;align-items:center;gap:1.02564cqw}
+.phone-status-icons svg{display:block;height:3.2cqw;fill:currentColor;overflow:visible}
+.phone-status-signal{width:4.61538cqw}
+.phone-status-wifi{width:5.12821cqw}
+.phone-status-battery{width:7.4359cqw}
+
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 게임: 상태바 아래 전체를 iframe으로 채운다(사이트 목업의 video 배치와 같은 방식) */
+#game{position:absolute;inset:var(--phone-status-height) 0 0;width:100%;height:calc(100% - var(--phone-status-height));border:0;display:block;background:#64CFC1}
+
+/* 회원용·제휴사용 두 대 배치 */
+.stage{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px 24px}
+.top{width:100%;max-width:calc(var(--phone-w)*2 + 96px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+h1{margin:0;font:700 34px/1.1 var(--display);letter-spacing:-.02em}
+.phones{display:flex;justify-content:center;gap:clamp(24px,5vw,96px)}
+.demo{gap:12px}
+.role{margin:0;padding:7px 18px 5px;border-radius:999px;font-size:18px;line-height:1.2;background:var(--coral);color:#fff}
+.demo-partner .role{background:#FFDC22;color:var(--ink)}
+.demo-partner #partner{background:#FCFCF8}
+#partner{position:absolute;inset:var(--phone-status-height) 0 0;width:100%;height:calc(100% - var(--phone-status-height));border:0;display:block}
+
+@media (max-width:860px){
+  :root{--phone-w:min(418px,calc(100vw - 16px))}
+  .stage{justify-content:flex-start;padding:16px 8px 32px}
+  .top{padding:0 8px}
+  h1{font-size:26px}
+  .phones{flex-direction:column;align-items:center;gap:32px}
+}
+
+/* 회원 폰: 수업 예약 화면 */
+.booking-layer{position:absolute;inset:var(--phone-status-height) 0 0;z-index:1;background:#FCFCF8;transform:translateX(100%);visibility:hidden;transition:transform .36s cubic-bezier(.32,.72,0,1),visibility 0s .36s}
+.booking-layer.open{transform:none;visibility:visible;transition:transform .36s cubic-bezier(.32,.72,0,1)}
+#booking{display:block;width:100%;height:100%;border:0;background:#FCFCF8}
+.booking-back{position:absolute;z-index:1;top:12px;left:12px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#123D40}
+.booking-back svg{width:24px;height:24px}
+.booking-title{position:absolute;z-index:1;top:12px;left:60px;right:60px;margin:0;height:44px;display:grid;place-items:center;font:700 16px/1 var(--sans);color:#123D40;pointer-events:none}
+#booking{height:calc(100% - 56px);margin-top:56px}
+.member-dialog{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:24px;background:rgba(18,61,64,.5)}
+.member-dialog[hidden]{display:none}
+.member-dialog-card{width:100%;max-width:300px;padding:24px 20px 16px;border-radius:16px;background:#FFFDF8;color:#123D40;text-align:center}
+.member-dialog-card h2{margin:0;font:700 17px/1.3 var(--sans)}
+.member-dialog-card p{margin:8px 0 18px;font-size:14px;line-height:1.45}
+.member-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.member-dialog-actions button{min-height:46px;border-radius:12px;font-size:15px}
+#member-dialog-cancel{background:#123D4012}
+#member-dialog-ok{background:#E94A62;color:#fff}
+#member-entry{position:absolute;z-index:1;inset:var(--phone-status-height) 0 0;width:100%;height:calc(100% - var(--phone-status-height));border:0;background:#64CFC1}
+#member-entry[hidden]{display:none}
+.demo-partner .phone-status{background:#FCFCF8}
+.demo-partner.is-entry .phone-status{background:#64CFC1}
+.demo-member .phone-status{transition:background-color .36s cubic-bezier(.32,.72,0,1)}
+.demo-member .screen:has(.booking-layer.open) .phone-status{background:#FCFCF8}
+.demo-partner .phone-status::after{content:"";position:absolute;inset:0;background:#102d2e3d;opacity:0;pointer-events:none}
+.demo-partner.sheet-open .phone-status::after{opacity:1}
+.notice-dialog-card{text-align:left;max-height:70%;overflow:auto;scrollbar-width:none}
+.notice-dialog-card p{white-space:pre-line;overflow-wrap:anywhere}
+#notice-dialog-close{width:100%;min-height:46px;border-radius:12px;background:#FFDC22;color:#123D40;font-size:15px;font-weight:700}

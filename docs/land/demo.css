@@ -1,0 +1,169 @@
+/* 웹 시연 전용 화면 조정 */
+#sandbox-toggle,.camera-tools,#attendance-feedback,.attendance-cancel{display:none!important}
+#hint:empty{display:none}
+
+/* 출석 버튼: 좌우·아래 8px, 화면 모서리와 같은 곡률로 하단 UI를 덮는다 */
+#daily-attendance{left:8px;right:8px;bottom:8px;gap:0;z-index:3}
+#daily-checkin{width:100%;min-height:104px;padding:0 32px;border:0;border-radius:42px;font-size:24px;gap:14px;box-shadow:0 8px 24px #123d4030;transition:transform .12s cubic-bezier(.23,1,.32,1)}
+#daily-checkin:active{transform:scale(.97)}
+#daily-checkin .icon{width:34px;height:34px}
+#daily-checkin>span:last-child{font-size:19px}
+#daily-checkin.popping{pointer-events:none;animation:checkin-pop .64s both}
+@keyframes checkin-pop{
+  0%{transform:scale(1);animation-timing-function:cubic-bezier(.3,0,.7,1)}
+  14%{transform:scale(.9);animation-timing-function:cubic-bezier(.2,1.4,.4,1)}
+  36%{transform:scale(1.07);opacity:1;animation-timing-function:cubic-bezier(.5,0,.8,.6)}
+  100%{transform:scale(0);opacity:0}
+}
+
+/* 출석 전에는 숨겼다가 끝나면 아래에서 올라온다 */
+.game-dock{transition:transform .6s cubic-bezier(.2,1.25,.36,1)}
+body:not(.dock-open) .game-dock{transform:translateY(calc(100% + 24px));visibility:hidden;transition:none}
+
+@media (prefers-reduced-motion:reduce){
+  #daily-checkin.popping{animation:none;opacity:0}
+  .game-dock{transition:none}
+}
+
+/* 상단: 로고 없이 포인트(좌)·프로필(우) */
+.game-header strong{display:none}
+#member-profile{width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border-radius:50%;background:#ffffffb8;border:1px solid #123d4030}
+.award-label{display:none!important}
+
+/* 하단: 편집 아이콘 하나만 */
+.game-dock [data-tool="pets"],.game-dock [data-tool="shop"]{display:none}
+.game-dock{justify-content:center}
+
+.game-header .coin-pill{margin-left:0;margin-right:auto}
+
+/* 편집 바텀시트 */
+body.sheet-on #cancel-placement,body.sheet-on #hint{display:none}
+.edit-sheet{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;flex-direction:column;background:#fffdf8;border-radius:28px 28px 0 0;box-shadow:0 -8px 30px #123d4026;pointer-events:auto;visibility:hidden;transition:transform .42s cubic-bezier(.32,.72,0,1),visibility 0s .42s}
+.edit-sheet.edit-open{visibility:visible;transition:transform .42s cubic-bezier(.32,.72,0,1)}
+.edit-sheet.edit-dragging{transition:none}
+.edit-head{flex:none;padding:8px 0 10px;touch-action:none;cursor:grab;user-select:none}
+.edit-grip{width:40px;height:5px;margin:0 auto 10px;border-radius:3px;background:#123d4033}
+.edit-pills{display:flex;gap:8px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.edit-pills::-webkit-scrollbar{display:none}
+.edit-pill{flex:none;min-width:112px;min-height:44px;padding:0 20px;border:0;border-radius:22px;background:#123d4012;color:#123d40;font-size:15px;font-weight:700;cursor:pointer;transition:background .16s,transform .12s}
+.edit-pill:active{transform:scale(.96)}
+.edit-pill[aria-selected="true"]{background:#ffdc22}
+.edit-list{flex:none;overflow-y:auto;overscroll-behavior:contain;padding:0 16px;transition:height .42s cubic-bezier(.32,.72,0,1)}
+.edit-sheet.edit-dragging .edit-list{transition:none}
+.edit-row{display:flex;align-items:center;border-bottom:1px solid #123d4014}
+.edit-row:last-child,.edit-peek .edit-row{border-bottom:0}
+.edit-row-main{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:68px;padding:8px 0;border:0;background:none;color:#123d40;text-align:left;cursor:pointer}
+.edit-tile{flex:none;display:grid;place-items:center;width:48px;height:48px;overflow:hidden;border-radius:14px;background:#123d400f}
+.edit-row.picked .edit-tile{background:#ffdc22}
+.edit-tile .icon{width:24px;height:24px}
+.edit-tile img{width:44px;height:44px;object-fit:contain}
+.edit-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.edit-copy strong{font-size:15px}
+.edit-copy small{font-size:12px;opacity:.7}
+.edit-cancel{flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:#123d400f;color:#123d40;cursor:pointer}
+.edit-cancel .icon{width:20px;height:20px}
+
+/* 상단 재화·달력 */
+.game-header{gap:8px}
+#point-entry{margin-right:0}
+#cash-pill{margin-left:0;margin-right:auto;cursor:default}
+#cash-pill b{font-weight:700}
+.cash-mark{display:grid!important;place-items:center;width:18px;height:18px;border-radius:50%;background:#2f9e78;color:#fff;font-size:11px;font-weight:800;line-height:1}
+#class-booking{position:absolute;top:68px;right:16px;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border-radius:50%;background:#ffffffb8;border:1px solid #123d4030;pointer-events:auto}
+
+/* 바텀시트 조정 */
+.edit-sheet{border-radius:0}
+.edit-pill{position:relative;min-width:0;min-height:32px;padding:0 14px;border-radius:16px;font-size:13px}
+.edit-pill::after{content:"";position:absolute;inset:-6px 0}
+.edit-head{padding:6px 0 8px}
+.edit-grip{margin-bottom:8px}
+.edit-list{padding-top:4px}
+.edit-grid-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.edit-grid-tile{display:grid;place-items:center;aspect-ratio:1;padding:4px;overflow:hidden;border:0;border-radius:14px;background:#123d400f;color:#123d40;cursor:pointer;transition:background .14s,transform .12s}
+.edit-grid-tile:active{transform:scale(.95)}
+.edit-grid-tile[aria-pressed="true"]{background:#ffdc22}
+.edit-grid-tile img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.edit-grid-tile .icon{width:28px;height:28px}
+
+/* 상단 정렬: 프로필과 달력의 오른쪽 끝을 맞춘다 */
+.game-header{padding-left:16px!important;padding-right:16px!important}
+
+/* 펫 보상 아이콘 */
+.world-action,.world-action:hover,.world-action.ready{border:0;box-shadow:none}
+
+/* 바텀시트 2차 조정 */
+.edit-sheet{border-radius:12px 12px 0 0}
+.edit-list{scrollbar-width:none}
+.edit-list::-webkit-scrollbar{display:none}
+
+/* 배치 미리보기 버튼 */
+.ghost-row{position:absolute;left:0;top:0;z-index:3;display:flex;gap:8px;pointer-events:none;will-change:transform}
+.ghost-row[hidden]{display:none}
+.ghost-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#fffdf8;color:#123d40;box-shadow:0 3px 10px #123d4030;cursor:pointer;pointer-events:auto;transition:transform .12s,opacity .14s}
+.ghost-btn:active{transform:scale(.92)}
+.ghost-btn .icon{width:22px;height:22px}
+.ghost-confirm{background:#ffdc22}
+.ghost-confirm:disabled{opacity:.45;cursor:not-allowed}
+
+.ghost-btn[hidden]{display:none}
+
+.ghost-row{z-index:5}
+
+/* 배치 버튼: 원 없이 두꺼운 아이콘만 */
+.ghost-btn,.ghost-confirm{background:none;box-shadow:none;color:#fff}
+.ghost-btn .icon{width:34px;height:34px;stroke-width:3.4;filter:drop-shadow(0 0 1.5px #123d40) drop-shadow(0 1px 2px #123d4099)}
+.ghost-btn:disabled{opacity:.4}
+
+/* 회전 화살표: 각자 바깥쪽으로 돌리고 체크보다 조금 아래 */
+.ghost-arc-left .icon{transform:translateY(9px) rotate(-38deg)}
+.ghost-arc-right .icon{transform:translateY(9px) rotate(38deg)}
+/* 줌인으로 버튼이 밀려나면 다른 UI 아래로 가려진다 */
+.ghost-row{z-index:1}
+.game-header{position:relative;z-index:2}
+#class-booking{z-index:2}
+body.pets-hidden #world-actions{display:none}
+
+/* 출석 버튼: 제휴사 승인 버튼과 같은 형태 */
+#daily-checkin{min-height:52px;padding:0 20px;border:1px solid transparent;border-radius:12px;font-size:15px;font-weight:750;gap:8px;justify-content:center;box-shadow:none}
+#daily-checkin .icon{width:18px;height:18px}
+#daily-checkin>span:last-child{margin-left:0;font-size:13px}
+
+/* 잠긴 땅 카운트다운 */
+.expand-timer{position:absolute;left:0;top:0;z-index:1;min-height:30px;padding:0 12px;border:0;border-radius:15px;background:#2e3238;color:#fff;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;cursor:pointer;pointer-events:auto}
+.expand-timer[hidden]{display:none}
+.expand-backdrop{position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:24px;background:#123d4066;pointer-events:auto}
+.expand-backdrop[hidden]{display:none}
+.expand-card{width:100%;max-width:300px;padding:24px 20px 14px;border-radius:12px;background:#fffdf8;color:#123d40;text-align:center}
+.expand-title{margin:0;font-size:15px;font-weight:750}
+.expand-countdown{margin:8px 0 4px;font-size:40px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.expand-note{margin:0 0 18px;font-size:12px;opacity:.7}
+.expand-pay{width:100%;min-height:48px;border:0;border-radius:12px;background:#ffdc22;color:#123d40;font-size:15px;font-weight:750;cursor:pointer}
+.expand-pay:disabled{opacity:.5;cursor:not-allowed}
+.expand-close{width:100%;min-height:44px;margin-top:4px;border:0;background:none;color:#123d40;font-size:13px;cursor:pointer}
+
+/* 하단: 편집 좌측, 씨앗 우측 */
+.game-dock{justify-content:space-between;padding-left:16px;padding-right:16px}
+.game-dock [data-tool="decorate"]{order:0}
+.game-dock [data-tool="plant"]{order:1;touch-action:none}
+.seed-float{position:fixed;left:0;top:0;z-index:7;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fffdf8;color:#123d40;box-shadow:0 4px 12px #123d4040;pointer-events:none}
+.seed-float .icon{width:24px;height:24px}
+
+/* 출석 버튼: 아이폰 Dock 느낌. 8px 여백에서 화면 모서리 곡선 안쪽에 들어오는 둥글기 */
+#daily-checkin{min-height:72px;border-radius:32px;font-size:17px}
+#daily-checkin .icon{width:20px;height:20px}
+#daily-checkin>span:last-child{font-size:14px}
+
+/* 스크롤바 숨김 */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
+*{scrollbar-width:none!important}
+*::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+
+#member-profile{overflow:hidden}
+#member-profile img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+
+/* 패널도 뒤가 비치지 않게 */
+#panel{background:#fffdf8!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+#studio-notice{position:absolute;z-index:2;top:120px;right:16px;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border-radius:50%;background:#ffffffb8;border:1px solid #123d4030;pointer-events:auto}
+#studio-notice[hidden]{display:none}
+#studio-notice svg{display:block;width:22px;height:22px;margin:auto}

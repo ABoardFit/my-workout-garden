@@ -1,0 +1,13 @@
+/* Local fictional preview progress only. Never store health notes or member GPS fixes. */
+const DeviceSession=(()=>{
+ const key='nutakeai-workout-land-preview-v8';
+ let fault=false;
+ const locale=(languages=navigator.languages)=>{for(const value of languages||[navigator.language]){const base=String(value).toLowerCase().split('-')[0];if(['ko','en'].includes(base))return base;}return 'en';};
+ const day=()=>{const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return ['year','month','day'].map(k=>parts.find(p=>p.type===k).value).join('-');};
+ function read(){try{const raw=localStorage.getItem(key);if(!raw)return null;const r=JSON.parse(raw);const snapshot=LandRules.migrate(r.snapshot);if(r.version!==1||!snapshot||!(r.claimDay===null||(/^\d{4}-\d{2}-\d{2}$/.test(r.claimDay)&&r.snapshot.attendance.includes(r.claimDay)))||!(r.studio===null||GeoAttendance.coord(r.studio)))throw Error('Invalid preview record');r.snapshot=snapshot;return r;}catch{fault=true;return null;}}
+ function write(snapshot,claimDay,studio){if(fault)return false;try{const r={version:1,snapshot:LandRules.copy(snapshot),claimDay,studio:GeoAttendance.coord(studio)?{latitude:studio.latitude,longitude:studio.longitude}:null};localStorage.setItem(key,JSON.stringify(r));return true;}catch{fault=true;return false;}}
+ function save(snapshot,studio){const r=read();if(fault)return false;if(r&&(r.snapshot.rev>snapshot.rev||(r.snapshot.rev===snapshot.rev&&JSON.stringify(r.snapshot)!==JSON.stringify(snapshot))))return false;return write(snapshot,r?.claimDay||null,studio);}
+ async function claim(snapshot,studio,isLive){if(fault||!navigator.locks?.request)return {ok:false,error:'storage'};try{return await navigator.locks.request(key,()=>{const r=read(),today=day();if(fault)return {ok:false,error:'storage'};if(!isLive())return {ok:false,error:'cancelled'};if(r?.claimDay===today)return {ok:false,error:'already',record:r};const latest=r&&r.snapshot.rev>=snapshot.rev?r.snapshot:snapshot;const base=LandRules.copy(latest);base.attendance=base.attendance.slice(-19);const result=LandRules.apply(base,{type:'attendance',day:today});if(!result.ok)return result;const from=latest.coins;if(!write(result.state,today,studio))return {ok:false,error:'storage'};return {ok:true,state:result.state,day:today,from,to:result.state.coins};});}catch{fault=true;return {ok:false,error:'storage'};}}
+ function reset(){try{localStorage.removeItem(key);fault=false;}catch{fault=true;}}
+ return {key,locale,day,read,save,claim,reset,healthy:()=>!fault&&!!navigator.locks?.request};
+})();

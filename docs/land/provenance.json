@@ -1,0 +1,97 @@
+{
+  "three": "0.187.0",
+  "esbuild": "0.28.2",
+  "sceneSource": "Existing local My Workout Land 3D scene",
+  "models": [
+    {
+      "key": "dog",
+      "sourceFile": "dog.glb",
+      "pack": "Kenney Cube Pets",
+      "sha256": "be3cd4715c8ec5e95a0abf159d84d1b642f95c813744e4448653c44091ed4888",
+      "bytes": 134028
+    },
+    {
+      "key": "cat",
+      "sourceFile": "cat.glb",
+      "pack": "Kenney Cube Pets",
+      "sha256": "b95482ac4795ef37742101e4ada922e2518b0f030fb1e082a7c35c63c06b7e1d",
+      "bytes": 179560
+    },
+    {
+      "key": "bunny",
+      "sourceFile": "bunny.glb",
+      "pack": "Kenney Cube Pets",
+      "sha256": "3b826de954bd68819f836ba21797163bb689965e4299c79bd3546ec39f1de234",
+      "bytes": 146056
+    },
+    {
+      "key": "flower-pink",
+      "sourceFile": "garden_flower_redA.glb",
+      "pack": "Kenney Nature Kit (recolored earlier)",
+      "sha256": "20f69e5947ff95179b2d67853aea2df99846482df476a9e8a594c40e9f0787c9",
+      "bytes": 7064
+    },
+    {
+      "key": "flower-yellow",
+      "sourceFile": "garden_flower_yellowA.glb",
+      "pack": "Kenney Nature Kit (recolored earlier)",
+      "sha256": "2812811359364fc675b78c78bcdeb9d29d4ff35b6c7f3b630468ba78a63e4091",
+      "bytes": 7076
+    },
+    {
+      "key": "flower-lilac",
+      "sourceFile": "garden_flower_purpleA.glb",
+      "pack": "Kenney Nature Kit (recolored earlier)",
+      "sha256": "1398c1e3ece213bab0e4611716b62d7357b11488a62c927247e797cf2677fb21",
+      "bytes": 7084
+    },
+    {
+      "key": "fox",
+      "pack": "Kenney Cube Pets",
+      "sourceFile": "/Users/anatomi/Documents/Codex/2026-11-08/users-anatomi-documents-codex-anatomya-diastasis-2/outputs/켄니-큐브-에셋시트/켄니-원본-동물24종/animal-fox.glb",
+      "sourceSha256": "ac1ae804da301371509cff84206e3c6b78ff9c7d02411ef0cd004731090d6b82",
+      "transformation": "Embedded original colormap texture into GLB; geometry and clips unchanged",
+      "sha256": "7b8e76bea1243251c1b6dc58d66dcdd676ca3f7e4c7439d7d6b7364ed0274740",
+      "bytes": 152736
+    },
+    {
+      "key": "panda",
+      "pack": "Kenney Cube Pets",
+      "sourceFile": "/Users/anatomi/Documents/Codex/2026-11-08/users-anatomi-documents-codex-anatomya-diastasis-2/outputs/켄니-큐브-에셋시트/켄니-원본-동물24종/animal-panda.glb",
+      "sourceSha256": "e001aea4fcd1c2dcb384774019f84183e6d0b638ebd986da65fee32bd93d1359",
+      "transformation": "Embedded original colormap texture into GLB; geometry and clips unchanged",
+      "sha256": "5834b438ca48756f8e6d989bf1984faf60119cc3329a6b9a8e69d37bc95fe355",
+      "bytes": 144528
+    },
+    {
+      "key": "penguin",
+      "pack": "Kenney Cube Pets",
+      "sourceFile": "/Users/anatomi/Documents/Codex/2026-11-08/users-anatomi-documents-codex-anatomya-diastasis-2/outputs/켄니-큐브-에셋시트/켄니-원본-동물24종/animal-penguin.glb",
+      "sourceSha256": "ff3d7ccae941ab06773a348b03446f97650043594ab1121a26514c3e2ea6cb29",
+      "transformation": "Embedded original colormap texture into GLB; geometry and clips unchanged",
+      "sha256": "26273b8f04bebce3ba7a93be1735c0921d2d850cc8a0b106fb0da921cdbf02a0",
+      "bytes": 141200
+    },
+    {
+      "key": "fruit-tree",
+      "pack": "Kenney Nature Kit (recolored earlier)",
+      "sourceFile": "/Users/anatomi/Documents/Codex/2026-11-08/users-anatomi-documents-codex-anatomya-diastasis-2/outputs/게임용-3D-에셋/모델/garden_tree_simple.glb",
+      "sha256": "8a822afca311a7b2b70248e2e1ede0efe15bd38152a8c6a23cf8570f79509edf",
+      "bytes": 6464,
+      "sceneDecoration": "Procedural cube fruits attached to mature tree"
+    }
+  ],
+  "runtimeModels": "Embedded in game.bundle.js; no remote model URLs",
+  "economy": "Fictional in-memory demo, not authoritative",
+  "customGardenAssets": {
+    "source": "Original procedural cube geometry in garden-assets.js",
+    "count": 15,
+    "ledger": "../garden-assets/LEDGER.json",
+    "notKenneyOriginal": true
+  },
+  "materialRecreation": {
+    "source": "User supplied island reference dated 2026-11-09",
+    "module": "art-style.js",
+    "technique": "Eight clustered pink tones; world-space seamless mosaic mapping; calibrated mint/peach palette; not the original shader."
+  }
+}
