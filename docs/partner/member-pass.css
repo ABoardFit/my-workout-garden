@@ -161,3 +161,14 @@ body[data-role="admin"] #sheet .sheet-head{padding-top:14px}
 .plan-choice .chip,.plan-presets .chip{width:100%;min-width:0;padding-left:0;padding-right:0;justify-content:center;text-align:center}
 #plan-total-field[hidden],#ms-remaining-field[hidden],#am-remaining-field[hidden]{display:none}
 #plan-delete{margin-top:8px}
+
+/* 가입 후 하단 제휴사 칸: 접힌 상태가 기본 */
+details.partner-bottom>summary{display:flex;align-items:center;gap:8px;min-height:44px;list-style:none;cursor:pointer}
+details.partner-bottom>summary::-webkit-details-marker{display:none}
+details.partner-bottom>summary h3{margin:0}
+.partner-bottom-state{margin-left:auto;font-size:13px;color:#123d40b3}
+details.partner-bottom>summary .icon{flex:none;width:18px;height:18px;transition:transform .16s}
+details.partner-bottom[open]>summary .icon{transform:rotate(90deg)}
+details.partner-bottom[open]>summary{margin-bottom:8px}
+
+.language-picker select{min-height:44px;border:0;background:none;color:inherit;font:inherit;text-align:right}

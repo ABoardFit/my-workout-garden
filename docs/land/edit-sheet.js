@@ -1,49 +1,61 @@
 /* 편집 바텀시트. 높이 세 단계: mid(화면 1/3), full(프로필 아래까지), peek(카테고리+선택한 행). */
 const GRID_COLUMNS = 4;
 const EDITING = { id: '__editing' }; // 섬 위의 요소를 집어 든 상태
-const TREE_SIZES = [['mid', '작은'], ['full', '큰']];
+const TREE_SIZES = [['mid', tr('land.edit.sheet.0002')], ['full', tr('land.edit.sheet.0003')]];
 const PROJECTION_MS = 220;
 const CLOSE_BEYOND_PX = 70;
 const HARD_FLICK_PX_PER_MS = 0.9;
 
-export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet }) {
+export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet, getState, onDetail }) {
   const placeDecor = (key) => ({
-    id: key, name: R.decor[key].ko, sub: '무제한', iconName: R.decor[key].icon, thumb: `decor:${key}`,
+    id: key, name: R.decor[key].ko, sub: tr('land.edit.sheet.0004'), iconName: R.decor[key].icon, thumb: `decor:${key}`,
     action: { type: 'place', item: `decor:${key}`, source: 'owned' },
   });
   const CATEGORIES = [
     {
-      id: 'plant', name: '식물', grid: true, items: () => [
-        { id: 'tree-sapling', name: '새싹 나무', iconName: 'TreePalm', thumb: 'tree-sapling', action: { type: 'plant-tree', variant: 0, size: 'sapling' } },
-        ...TREE_SIZES.flatMap(([size, prefix]) => ['민트 큐브', '구름 나무', '두 갈래'].map((name, variant) => ({
+      id: 'plant', name: tr('land.edit.sheet.0005'), grid: true, items: () => [
+        { id: 'tree-sapling', name: tr('land.edit.sheet.0006'), iconName: 'TreePalm', thumb: 'tree-sapling', action: { type: 'plant-tree', variant: 0, size: 'sapling' } },
+        ...TREE_SIZES.flatMap(([size, prefix]) => [tr('land.edit.sheet.0007'), tr('land.edit.sheet.0008'), tr('land.edit.sheet.0009')].map((name, variant) => ({
           id: `tree-${variant}-${size}`, name: `${prefix} ${name}`, iconName: 'TreePalm', thumb: `tree-${variant}-${size}`, action: { type: 'plant-tree', variant, size },
         }))),
         placeDecor('mintTree'), placeDecor('pinkShrub'), placeDecor('flowerSpray'), placeDecor('pinkFern'),
       ],
     },
     {
-      id: 'building', name: '건물', grid: true, items: () => ['house', 'bench', 'mintArch', 'food', 'toy'].map(placeDecor),
+      id: 'building', name: tr('land.edit.sheet.0010'), grid: true, items: () => ['house', 'bench', 'mintArch', 'food', 'toy'].map(placeDecor),
     },
     {
-      id: 'pet', name: '펫', grid: true, items: () => Object.keys(R.animals).map((k) => ({
+      id: 'pet', name: tr('land.edit.sheet.0011'), grid: true, items: () => Object.keys(R.animals).filter((k) => getState().pets[k]).map((k) => ({
         id: k, name: R.animals[k].ko, iconName: 'PawPrint', thumb: k, action: { type: 'pet', pet: k },
       })),
     },
     {
-      id: 'terrain', name: '지형', grid: true, items: () => [
-        { id: 'raise', name: '땅 쌓기', sub: '탭하거나 드래그해서 쌓아요', pickedSub: '드래그하면 주르륵 쌓여요', iconName: 'Plus', action: { type: 'terrain', delta: 1 } },
-        { id: 'lower', name: '땅 낮추기', sub: '탭하거나 드래그해서 낮춰요', pickedSub: '드래그하면 주르륵 낮아져요', iconName: 'Minus', action: { type: 'terrain', delta: -1 } },
-        { id: 'expand', name: '땅 넓히기', sub: '누를 때마다 한 칸씩', iconName: 'Expand', expand: true },
+      id: 'terrain', name: tr('land.edit.sheet.0012'), grid: true, items: () => [
+        { id: 'raise', name: tr('land.edit.sheet.0013'), sub: tr('land.edit.sheet.0014'), pickedSub: tr('land.edit.sheet.0015'), iconName: 'Plus', action: { type: 'terrain', delta: 1 } },
+        { id: 'lower', name: tr('land.edit.sheet.0016'), sub: tr('land.edit.sheet.0017'), pickedSub: tr('land.edit.sheet.0018'), iconName: 'Minus', action: { type: 'terrain', delta: -1 } },
+        { id: 'expand', name: tr('land.edit.sheet.0019'), sub: tr('land.edit.sheet.0020'), iconName: 'Expand', expand: true },
         placeDecor('backCliff'),
       ],
     },
   ];
 
   const SEEDS = {
-    id: 'seed', name: '씨앗', grid: true, items: () => Object.keys(R.crops).map((k) => ({
-      id: `seed-${k}`, name: `${R.crops[k].ko} 씨앗`, iconName: 'Sprout', thumb: `crop:${k}`, action: { type: 'plant', kind: k },
+    id: 'seed', name: tr('land.edit.sheet.0021'), grid: true, items: () => Object.keys(R.crops).map((k) => ({
+      id: `seed-${k}`, group: 'seed', kind: k, detail: true, count: R.bagOf(getState()).seed[k] || 0, name: tr('land.edit.sheet.0022',{v0:R.crops[k].ko}), iconName: 'Sprout', thumb: `crop:${k}`, action: { type: 'plant', kind: k },
     })),
   };
+  const held = (group) => Object.entries(R.bagOf(getState())[group]).filter(([, n]) => n > 0);
+  const OWN_BUILDINGS = {
+    id: 'own-building', name: tr('land.edit.sheet.0010'), grid: true, empty: tr('land.edit.sheet.0023'), items: () => held('building').map(([k, count]) => ({
+      id: `own-building-${k}`, group: 'building', kind: k, detail: true, count, name: R.decor[k].ko, iconName: R.decor[k].icon, thumb: `decor:${k}`, action: { type: 'place', item: `decor:${k}`, source: 'owned', bag: true },
+    })),
+  };
+  const OWN_PETS = {
+    id: 'own-pet', name: tr('land.edit.sheet.0011'), grid: true, empty: tr('land.edit.sheet.0024'), items: () => held('pet').map(([k, count]) => ({
+      id: `own-pet-${k}`, group: 'pet', kind: k, detail: true, count, name: R.animals[k].ko, iconName: 'PawPrint', thumb: k, action: { type: 'pet', pet: k },
+    })),
+  };
+  const OWNED = [SEEDS, OWN_BUILDINGS, OWN_PETS];
   const make = (tag, className, parent) => {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -51,7 +63,7 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
     return node;
   };
   const sheet = make('section', 'edit-sheet', document.getElementById('game-ui'));
-  sheet.setAttribute('aria-label', '섬 편집');
+  sheet.setAttribute('aria-label', tr('land.edit.sheet.0025'));
   const head = make('div', 'edit-head', sheet);
   make('div', 'edit-grip', head);
   const pills = make('div', 'edit-pills', head);
@@ -97,7 +109,7 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
   }
 
   function renderPills() {
-    pills.replaceChildren(...(category === SEEDS ? [SEEDS] : CATEGORIES).map((c) => {
+    pills.replaceChildren(...(OWNED.includes(category) ? OWNED : CATEGORIES).map((c) => {
       const b = make('button', 'edit-pill');
       b.type = 'button';
       b.textContent = c.name;
@@ -134,6 +146,10 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
     b.setAttribute('aria-label', item.name);
     b.setAttribute('aria-pressed', String(picked?.id === item.id));
     fillPreview(b, item);
+    if (item.detail) {
+      make('small', 'edit-count', b).textContent = item.count;
+      b.classList.toggle('edit-empty', item.count < 1);
+    }
     b.addEventListener('click', () => pick(item));
     return b;
   }
@@ -144,6 +160,12 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
     const rows = [];
     for (let i = 0; i < items.length; i += GRID_COLUMNS) rows.push(items.slice(i, i + GRID_COLUMNS));
     const shown = peeking ? rows.filter((r) => r.some((item) => item.id === picked.id)) : rows;
+    if (!items.length && category.empty) {
+      const note = make('p', 'edit-empty-note');
+      note.textContent = category.empty;
+      list.replaceChildren(note);
+      return;
+    }
     list.replaceChildren(...shown.map((r) => {
       const row = make('div', 'edit-grid-row');
       row.append(...r.map(renderTile));
@@ -159,13 +181,17 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
     renderList();
     applySnap('mid');
   }
-  function pick(item) {
+  function pick(item, chosen = false) {
     if (item.expand) {
       if (perform({ type: 'expand' })) focusPet(null, true);
       return;
     }
     if (picked?.id === item.id) {
       cancelPick();
+      return;
+    }
+    if (item.detail && !chosen) {
+      onDetail(item);
       return;
     }
     if (picked) clear();
@@ -237,7 +263,7 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
   }
   function open() {
     picked = null;
-    if (category === SEEDS) category = CATEGORIES[0];
+    if (OWNED.includes(category)) category = CATEGORIES[0];
     renderPills();
     renderList();
     applySnap('mid');
@@ -254,5 +280,9 @@ export function editSheet({ R, icon, thumbs, perform, select, clear, focusPet })
     list.scrollTop = 0;
     applySnap('peek');
   }
-  return { open, openSeeds, close, edit, category: () => category.id, ownsDecor: (item) => category.items().some((i) => i.action?.item === item), cancel: cancelPick, refresh: () => { if (snap !== 'closed') renderList(); }, isOpen: () => snap !== 'closed' };
+  return { open, openSeeds, close, edit, category: () => category.id, ownsDecor: (item) => category.items().some((i) => i.action?.item === item) || (['building', 'own-building'].includes(category.id) && !!R.GACHA.pools.building[item.slice(6)]), cancel: cancelPick, choose: (item) => pick(item, true), refresh: () => {
+    if (snap === 'closed') return;
+    if (picked?.detail && !category.items().some((i) => i.id === picked.id && i.count > 0)) { cancelPick(); return; }
+    renderList();
+  }, isOpen: () => snap !== 'closed' };
 }

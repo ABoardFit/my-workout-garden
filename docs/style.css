@@ -82,3 +82,8 @@ h1{margin:0;font:700 34px/1.1 var(--display);letter-spacing:-.02em}
 .notice-dialog-card{text-align:left;max-height:70%;overflow:auto;scrollbar-width:none}
 .notice-dialog-card p{white-space:pre-line;overflow-wrap:anywhere}
 #notice-dialog-close{width:100%;min-height:46px;border-radius:12px;background:#FFDC22;color:#123D40;font-size:15px;font-weight:700}
+
+/* 게임 중앙 팝업·뽑기 연출의 딤이 상태바까지 덮는다 */
+.demo-member .phone-status::after{content:"";position:absolute;inset:0;background:#123d4066;opacity:0;pointer-events:none}
+.demo-member.land-dim .phone-status::after{opacity:1}
+.demo-member.land-dim-strong .phone-status::after{opacity:1;background:#0d2a2df2}

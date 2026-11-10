@@ -50,11 +50,11 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
   bottomRow.className = 'ghost-row';
   bottomRow.hidden = true;
   hostUi.append(topRow, bottomRow);
-  const leftButton = makeButton('ArcLeft', '왼쪽으로 90도 돌리기', '', () => rotate(3), topRow);
-  const confirmButton = makeButton('Check', '여기에 놓기', 'ghost-confirm', confirm, topRow);
-  const rightButton = makeButton('ArcRight', '오른쪽으로 90도 돌리기', '', () => rotate(1), topRow);
-  makeButton('X', '선택 해제', '', () => onCancel(), bottomRow);
-  const removeButton = makeButton('Archive', '치우기', '', removeTarget, bottomRow);
+  const leftButton = makeButton('ArcLeft', tr('land.placement.0194'), '', () => rotate(3), topRow);
+  const confirmButton = makeButton('Check', tr('land.placement.0195'), 'ghost-confirm', confirm, topRow);
+  const rightButton = makeButton('ArcRight', tr('land.placement.0196'), '', () => rotate(1), topRow);
+  makeButton('X', tr('land.placement.0197'), '', () => onCancel(), bottomRow);
+  const removeButton = makeButton('Archive', tr('land.placement.0198'), '', removeTarget, bottomRow);
 
   let action = null;
   let ghost = null;
@@ -85,9 +85,10 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
     const label = (b, name, text) => { b.replaceChildren(); b.insertAdjacentHTML('beforeend', ARC_ICONS[name] || icon(name)); b.setAttribute('aria-label', text); b.title = text; };
     leftButton.classList.toggle('ghost-arc-left', !cellMode);
     rightButton.classList.toggle('ghost-arc-right', !cellMode);
-    label(leftButton, cellMode ? 'Minus' : 'ArcLeft', cellMode ? '한 층 낮추기' : '왼쪽으로 90도 돌리기');
-    label(rightButton, cellMode ? 'Plus' : 'ArcRight', cellMode ? '한 층 쌓기' : '오른쪽으로 90도 돌리기');
+    label(leftButton, cellMode ? 'Minus' : 'ArcLeft', cellMode ? tr('land.placement.0199') : tr('land.placement.0194'));
+    label(rightButton, cellMode ? 'Plus' : 'ArcRight', cellMode ? tr('land.placement.0200') : tr('land.placement.0196'));
     confirmButton.hidden = cellMode;
+    rightButton.disabled = false;
     removeButton.hidden = !(editing() && ['decor', 'plant'].includes(action.target.kind));
   }
 
@@ -238,8 +239,14 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
     ray.setFromCamera(ndc, camera);
     const hit = ray.intersectObjects(terrain.surfaces(), false)[0];
     if (!hit) return null;
-    const inside = hit.point.clone().addScaledVector(hit.face.normal, -0.1);
-    const level = Math.max(0, Math.ceil((inside.y - 0.245 + 0.1 * hit.face.normal.y) / R.TERRAIN_STEP - 0.001));
+    const normal = hit.face.normal.clone();
+    if (hit.instanceId !== undefined) {
+      const m = new T.Matrix4();
+      hit.object.getMatrixAt(hit.instanceId, m);
+      normal.transformDirection(m);
+    }
+    const inside = hit.point.clone().addScaledVector(normal, -0.05);
+    const level = Math.max(0, Math.ceil((inside.y - 0.245) / R.TERRAIN_STEP - 0.001));
     return { x: inside.x, z: inside.z, level };
   }
   function cellFromHit(hit) {
@@ -280,7 +287,7 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
 
   function rotate(step) {
     if (editingCell()) {
-      perform({ type: 'terrain', delta: step === 3 ? -1 : 1, x: cell[0] * CELL, z: cell[1] * CELL });
+      perform({ type: 'terrain', delta: step === 3 ? -1 : 1, x: cell[0] * CELL, z: cell[1] * CELL, level: cellLevel, single: true });
       return;
     }
     rotation = (rotation + step) % 4;
@@ -290,7 +297,7 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
   function confirm() {
     if (!ghost) return;
     if (!valid) {
-      notify('여기에는 놓을 수 없어요.');
+      notify(tr('land.placement.0201'));
       return;
     }
     const x = cell[0] * CELL + anchorOffset();
@@ -306,7 +313,7 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
     const done = action.type === 'pet'
       ? perform({ type: 'pet-spot', pet: action.pet, x, z, rotation })
       : perform({ ...action, x, z, rotation });
-    if (!done) return;
+    if (!done || !ghost) return; // 마지막 1개를 놓으면 시트가 배치 모드를 먼저 끝낸다
     const next = nearestValid(cell);
     if (next) setCell(next[0], next[1]);
     else setCell(cell[0], cell[1]);
@@ -353,24 +360,66 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
     topRow.style.transform = `translate(${centerX - topRow.offsetWidth / 2}px,${b.top - topRow.offsetHeight}px)`;
     bottomRow.style.transform = `translate(${centerX - bottomRow.offsetWidth / 2}px,${b.bottom}px)`;
   }
+  /* 고른 블록이 네모(깎이지 않음)면 + 를 끈다. 대각선이거나 빈 층일 때만 채울 수 있다 */
+  function canFillSelected() {
+    const s = getState();
+    const col = s.terrain.find((t) => t.x === cell[0] && t.z === cell[1]);
+    const level = Math.min(cellLevel, col?.height || 0);
+    if (level === 0) return !!R.baseOf(s, cell[0] * CELL, cell[1] * CELL);
+    return !!col.holes?.includes(level - 1) || !!R.layerCut(col, level - 1);
+  }
   function loop() {
     frame = requestAnimationFrame(loop);
+    if (ghost && cell && editingCell()) rightButton.disabled = !canFillSelected();
     if (ghost && cell) updateValidity();
     layoutControls();
   }
 
+  /* 물건(과 놓일 칸)을 누르면 물건을 끌고, 그 밖을 끌면 화면을 옮긴다. 밖을 짧게 탭하면 물건이 그 칸으로 간다 */
+  const TAP_SLOP = 6;
+  let tap = null;
+  function onGhost(e) {
+    const r = dom.getBoundingClientRect();
+    const b = occupiedRect(r.width, r.height);
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    return x >= b.left && x <= b.right && y >= b.top && y <= b.bottom;
+  }
+  /* 화면 이동 컨트롤보다 먼저 받아서 이번 누름을 누가 가질지 정한다 */
   dom.addEventListener('pointerdown', (e) => {
     if (!ghost || e.button !== 0) return;
-    dragging = e.pointerId;
-    followPointer(e);
-  });
+    if (dragging !== null || tap) { // 두 번째 손가락: 물건 끌기는 멈추고 회전·확대에 맡긴다
+      tap = null;
+      dragging = null;
+      controls.enabled = true;
+      parked = true;
+      syncControls();
+      return;
+    }
+    if (onGhost(e)) {
+      dragging = e.pointerId;
+      controls.enabled = false;
+      followPointer(e);
+    } else {
+      controls.enabled = true;
+      controls.enablePan = true;
+      tap = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    }
+  }, { capture: true });
   dom.addEventListener('pointermove', (e) => {
     if (!ghost) return;
     if (dragging === e.pointerId) followPointer(e);
+    else if (tap?.id === e.pointerId && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > TAP_SLOP) tap = null;
   });
   const endPress = (e) => {
+    if (tap?.id === e.pointerId) {
+      tap = null;
+      if (e.type === 'pointerup' && ghost) followPointer(e);
+      return;
+    }
     if (dragging !== e.pointerId) return;
     dragging = null;
+    controls.enabled = true;
     parked = true;
     syncControls();
   };
@@ -438,6 +487,8 @@ export function placement({ T, land, camera, renderer, controls, terrain, R, get
     action = null;
     cell = null;
     dragging = null;
+    tap = null;
+    controls.enabled = true;
     highlight.visible = false;
     syncControls();
   }

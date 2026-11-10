@@ -17,36 +17,36 @@ const MemberAuth = (() => {
 
   function loginHtml() {
     return `<section class="ma-wrap">
-      <button class="auth-back" data-auth="back" aria-label="뒤로">${icon('ArrowLeft')}</button>
-      <h1 tabindex="-1">회원 로그인</h1>
+      <button class="auth-back" data-auth="back" aria-label="${tr('partner.app.entry.0232')}">${icon('ArrowLeft')}</button>
+      <h1 tabindex="-1">${tr('partner.app.entry.0245')}</h1>
       <form id="ma-login-form" novalidate>
-        <div class="ma-field"><input id="ma-email" type="email" autocomplete="email" placeholder="이메일" aria-label="이메일" value="${escapeHtml(prefillEmail)}"></div>
-        <div class="ma-field"><input id="ma-password" type="password" autocomplete="current-password" placeholder="비밀번호" aria-label="비밀번호"></div>
+        <div class="ma-field"><input id="ma-email" type="email" autocomplete="email" placeholder="${tr('partner.member.auth.0464')}" aria-label="${tr('partner.member.auth.0464')}" value="${escapeHtml(prefillEmail)}"></div>
+        <div class="ma-field"><input id="ma-password" type="password" autocomplete="current-password" placeholder="${tr('partner.member.auth.0465')}" aria-label="${tr('partner.member.auth.0465')}"></div>
         <p class="ma-error" id="ma-login-error" role="alert"></p>
-        <button class="ma-primary" type="submit">로그인</button>
-        <div class="ma-links"><button type="button" class="ma-link" data-ma="open-signup">회원가입</button><button type="button" class="ma-link" data-ma="forgot">비밀번호 찾기</button></div>
-        <div class="ma-social-row"><button type="button" class="ma-social ma-kakao" data-ma="social" aria-label="카카오로 계속하기">${KAKAO}</button><button type="button" class="ma-social ma-apple" data-ma="social" aria-label="Apple로 계속하기">${APPLE}</button><button type="button" class="ma-social ma-google" data-ma="social" aria-label="Google로 계속하기">${GOOGLE}</button></div>
+        <button class="ma-primary" type="submit">${tr('partner.app.entry.0237')}</button>
+        <div class="ma-links"><button type="button" class="ma-link" data-ma="open-signup">${tr('partner.app.entry.0228')}</button><button type="button" class="ma-link" data-ma="forgot">${tr('partner.member.auth.0467')}</button></div>
+        <div class="ma-social-row"><button type="button" class="ma-social ma-kakao" data-ma="social" aria-label="${tr('partner.member.auth.0466')}">${KAKAO}</button><button type="button" class="ma-social ma-apple" data-ma="social" aria-label="${tr('partner.member.auth.0468')}">${APPLE}</button><button type="button" class="ma-social ma-google" data-ma="social" aria-label="${tr('partner.member.auth.0469')}">${GOOGLE}</button></div>
       </form>
     </section>`;
   }
   function signupHtml() {
     return `<section class="ma-signup">
-      <header class="ma-head"><button type="button" data-ma="close-signup" aria-label="뒤로">${icon('ArrowLeft')}</button></header>
-      <h1 tabindex="-1">회원가입</h1>
+      <header class="ma-head"><button type="button" data-ma="close-signup" aria-label="${tr('partner.app.entry.0232')}">${icon('ArrowLeft')}</button></header>
+      <h1 tabindex="-1">${tr('partner.app.entry.0228')}</h1>
       <form id="ma-signup-form" novalidate>
-        <div class="ma-field"><div class="ma-two"><input id="ma-last" maxlength="15" placeholder="성" aria-label="성" autocomplete="family-name"><input id="ma-first" maxlength="15" placeholder="이름" aria-label="이름" autocomplete="given-name"></div></div>
-        <div class="ma-field"><div class="ma-check-row"><div class="ma-nick"><b>@</b><input id="ma-nick" maxlength="10" autocomplete="off" autocapitalize="none" placeholder="닉네임" aria-label="닉네임"></div><button type="button" class="ma-check" data-ma="check-nick" aria-label="닉네임 중복 확인">중복 확인</button></div><p class="ma-note" id="ma-nick-note"></p></div>
-        <div class="ma-field"><div class="ma-check-row"><input id="ma-su-email" type="email" autocomplete="email" placeholder="이메일" aria-label="이메일"><button type="button" class="ma-check" data-ma="check-email" aria-label="이메일 중복 확인">중복 확인</button></div><p class="ma-note" id="ma-email-note"></p></div>
-        <div class="ma-field"><input id="ma-pw" type="password" autocomplete="new-password" placeholder="비밀번호 (8자 이상)" aria-label="비밀번호"><div class="ma-meter" id="ma-meter" hidden><div><i id="ma-meter-fill"></i></div><small id="ma-meter-text"></small></div></div>
-        <div class="ma-field"><input id="ma-pw2" type="password" autocomplete="new-password" placeholder="비밀번호 확인" aria-label="비밀번호 확인"></div>
-        <label class="ma-agree"><input id="ma-agree" type="checkbox"><span><u>약관</u> 및 <u>개인정보 처리방침</u> 동의</span></label>
+        <div class="ma-field"><div class="ma-two"><input id="ma-last" maxlength="15" placeholder="${tr('partner.member.auth.0470')}" aria-label="${tr('partner.member.auth.0470')}" autocomplete="family-name"><input id="ma-first" maxlength="15" placeholder="${tr('partner.member.auth.0471')}" aria-label="${tr('partner.member.auth.0471')}" autocomplete="given-name"></div></div>
+        <div class="ma-field"><div class="ma-check-row"><div class="ma-nick"><b>@</b><input id="ma-nick" maxlength="10" autocomplete="off" autocapitalize="none" placeholder="${tr('partner.app.entry.0252')}" aria-label="${tr('partner.app.entry.0252')}"></div><button type="button" class="ma-check" data-ma="check-nick" aria-label="${tr('partner.member.auth.0472')}">${tr('partner.member.auth.0476')}</button></div><p class="ma-note" id="ma-nick-note"></p></div>
+        <div class="ma-field"><div class="ma-check-row"><input id="ma-su-email" type="email" autocomplete="email" placeholder="${tr('partner.member.auth.0464')}" aria-label="${tr('partner.member.auth.0464')}"><button type="button" class="ma-check" data-ma="check-email" aria-label="${tr('partner.member.auth.0473')}">${tr('partner.member.auth.0476')}</button></div><p class="ma-note" id="ma-email-note"></p></div>
+        <div class="ma-field"><input id="ma-pw" type="password" autocomplete="new-password" placeholder="${tr('partner.member.auth.0474')}" aria-label="${tr('partner.member.auth.0465')}"><div class="ma-meter" id="ma-meter" hidden><div><i id="ma-meter-fill"></i></div><small id="ma-meter-text"></small></div></div>
+        <div class="ma-field"><input id="ma-pw2" type="password" autocomplete="new-password" placeholder="${tr('partner.member.auth.0475')}" aria-label="${tr('partner.member.auth.0475')}"></div>
+        <label class="ma-agree"><input id="ma-agree" type="checkbox"><span><u>${tr('partner.member.auth.0477')}</u> ${tr('partner.member.auth.0478')} <u>${tr('partner.member.auth.0479')}</u> ${tr('partner.member.auth.0480')}</span></label>
         <p class="ma-error" id="ma-signup-error" role="alert"></p>
-        <button class="ma-primary" type="submit">가입하기</button>
+        <button class="ma-primary" type="submit">${tr('partner.member.auth.0481')}</button>
       </form>
     </section>`;
   }
   function doneHtml() {
-    return `<div class="ma-done-back"><div class="ma-done" role="alertdialog" aria-modal="true"><h2>가입 완료</h2><p>가입한 정보로 로그인해주세요.</p><button class="ma-primary" data-ma="done">확인</button></div></div>`;
+    return `<div class="ma-done-back"><div class="ma-done" role="alertdialog" aria-modal="true"><h2>${tr('partner.member.auth.0482')}</h2><p>${tr('partner.member.auth.0483')}</p><button class="ma-primary" data-ma="done">${tr('land.shop.ui.0212')}</button></div></div>`;
   }
   const html = () => (screen === 'signup' ? signupHtml() : loginHtml());
 
@@ -70,8 +70,8 @@ const MemberAuth = (() => {
   }
   function submitLogin() {
     const email = value('ma-email').trim();
-    if (!email || !value('ma-password')) { setText('ma-login-error', '이메일과 비밀번호를 모두 입력해주세요.'); return; }
-    if (!EMAIL_FORMAT.test(email)) { setText('ma-login-error', '올바른 이메일 형식이 아닙니다.'); return; }
+    if (!email || !value('ma-password')) { setText('ma-login-error', tr('partner.member.auth.0484')); return; }
+    if (!EMAIL_FORMAT.test(email)) { setText('ma-login-error', tr('partner.member.auth.0485')); return; }
     finish();
   }
   function submitSignup() {
@@ -80,13 +80,13 @@ const MemberAuth = (() => {
     const last = value('ma-last').trim();
     const email = value('ma-su-email').trim();
     const pw = value('ma-pw');
-    if (!first || !value('ma-nick').trim() || !email || !pw || !value('ma-pw2')) return error('모든 항목을 입력해주세요.');
-    if (!EMAIL_FORMAT.test(email)) return error('올바른 이메일 형식이 아닙니다.');
-    if (emailStatus !== 'ok') return error('이메일 중복 확인을 해주세요.');
-    if (nickStatus !== 'ok') return error('닉네임 중복 확인을 먼저 해주세요.');
-    if (pw.length < 8) return error('비밀번호는 8자 이상이어야 합니다.');
-    if (pw !== value('ma-pw2')) return error('비밀번호가 일치하지 않습니다.');
-    if (!document.getElementById('ma-agree').checked) return error('약관에 동의해주세요.');
+    if (!first || !value('ma-nick').trim() || !email || !pw || !value('ma-pw2')) return error(tr('partner.member.auth.0486'));
+    if (!EMAIL_FORMAT.test(email)) return error(tr('partner.member.auth.0485'));
+    if (emailStatus !== 'ok') return error(tr('partner.member.auth.0487'));
+    if (nickStatus !== 'ok') return error(tr('partner.member.auth.0488'));
+    if (pw.length < 8) return error(tr('partner.member.auth.0489'));
+    if (pw !== value('ma-pw2')) return error(tr('partner.member.auth.0490'));
+    if (!document.getElementById('ma-agree').checked) return error(tr('partner.member.auth.0491'));
     saveName(`${last}${first}`);
     prefillEmail = email;
     screen = 'login';
@@ -103,19 +103,19 @@ const MemberAuth = (() => {
     if (action === 'open-signup') { prefillEmail = value('ma-email'); screen = 'signup'; redraw(); document.querySelector('.ma-signup')?.classList.add('enter'); }
     else if (action === 'close-signup') { screen = 'login'; redraw(); }
     else if (action === 'social') finish();
-    else if (action === 'forgot') setText('ma-login-error', '시안에서는 비밀번호 재설정 메일을 보내지 않아요.');
+    else if (action === 'forgot') setText('ma-login-error', tr('partner.member.auth.0492'));
     else if (action === 'done') document.querySelector('.ma-done-back')?.remove();
     else if (action === 'check-nick') {
       const nick = value('ma-nick').trim().toLowerCase();
       if (!nick) return;
       nickStatus = TAKEN_NICKS.includes(nick) ? 'taken' : 'ok';
-      setText('ma-nick-note', nickStatus === 'ok' ? '✓ 사용 가능한 닉네임입니다' : '✕ 이미 사용 중인 닉네임입니다');
+      setText('ma-nick-note', nickStatus === 'ok' ? tr('partner.member.auth.0493') : tr('partner.member.auth.0494'));
       document.getElementById('ma-nick-note').dataset.state = nickStatus;
     } else if (action === 'check-email') {
       const email = value('ma-su-email').trim();
-      if (!EMAIL_FORMAT.test(email)) { setText('ma-signup-error', '올바른 이메일 형식이 아닙니다.'); return; }
+      if (!EMAIL_FORMAT.test(email)) { setText('ma-signup-error', tr('partner.member.auth.0485')); return; }
       emailStatus = 'ok';
-      setText('ma-email-note', '사용 가능한 이메일입니다.');
+      setText('ma-email-note', tr('partner.member.auth.0495'));
       document.getElementById('ma-email-note').dataset.state = 'ok';
     }
   });
@@ -136,7 +136,7 @@ const MemberAuth = (() => {
       document.getElementById('ma-meter').hidden = !e.target.value;
       document.getElementById('ma-meter-fill').style.width = `${(score / 3) * 100}%`;
       document.getElementById('ma-meter-fill').dataset.score = score;
-      setText('ma-meter-text', ['약함', '약함', '보통', '강함'][score]);
+      setText('ma-meter-text', [tr('partner.member.auth.0496'), tr('partner.member.auth.0496'), tr('partner.member.auth.0497'), tr('partner.member.auth.0498')][score]);
     }
     if (e.target.id?.startsWith('ma-')) { setText('ma-login-error', ''); setText('ma-signup-error', ''); }
   });

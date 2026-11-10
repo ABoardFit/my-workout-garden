@@ -41,7 +41,7 @@ const RangeCalendar = (() => {
       };
       const title = document.createElement('strong');
       title.textContent = `${year}.${String(month + 1).padStart(2, '0')}`;
-      heading.append(arrow('‹', '이전 달', -1), title, arrow('›', '다음 달', 1));
+      heading.append(arrow('‹', tr('partner.app.0370'), -1), title, arrow('›', tr('partner.app.0371'), 1));
 
       const week = document.createElement('div');
       week.className = 'cal-row';
@@ -102,7 +102,7 @@ const RangeCalendar = (() => {
         const summary = document.createElement('p');
         summary.className = 'cal-summary';
         const last = range.end || range.start;
-        summary.textContent = `${Number(range.start.slice(5, 7))}월 ${Number(range.start.slice(8))}일부터 ${Number(last.slice(5, 7))}월 ${Number(last.slice(8))}일까지`;
+        summary.textContent = tr('partner.range.calendar.0693',{v0:Number(range.start.slice(5, 7)),v1:Number(range.start.slice(8)),v2:Number(last.slice(5, 7)),v3:Number(last.slice(8))});
         root.append(summary);
       }
       host.replaceChildren(root);

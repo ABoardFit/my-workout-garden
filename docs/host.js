@@ -1,3 +1,4 @@
+window.I18nKeepPage = true; // 바깥 페이지는 게임 상태를 들고 있어 새로고침하지 않는다
 /* 시연 페이지와 게임(iframe) 사이의 연결. 실제 계정·GPS 없이 이 브라우저에만 저장한다. */
 const KEY = 'my-workout-garden:land:v4';
 const POP_MS = 640; // 출석 버튼 애니메이션 길이(demo.css와 맞춘다)
@@ -64,6 +65,11 @@ addEventListener('message', (e) => {
   if (msg?.type === 'land-booking') openOverlay('booking');
   if (msg?.type === 'land-profile') openOverlay('profile');
   if (msg?.type === 'land-notice') openNotice();
+  if (msg?.type === 'land-dim') {
+    const demo = document.querySelector('.demo-member');
+    demo.classList.toggle('land-dim', msg.level === 'soft');
+    demo.classList.toggle('land-dim-strong', msg.level === 'strong');
+  }
   if (msg?.type === 'land-checkin') {
     if (checked) return;
     checked = true;
@@ -108,7 +114,7 @@ function openOverlay(view) {
     bookingFrame.dataset.view = view;
     bookingFrame.src = `partner/index.html?view=${view}`;
   }
-  document.getElementById('booking-title').textContent = view === 'profile' ? '프로필' : '';
+  document.getElementById('booking-title').textContent = view === 'profile' ? tr('host.0001') : '';
   bookingLayer.classList.add('open');
   bookingLayer.inert = false;
 }
@@ -189,3 +195,5 @@ document.getElementById('reset').addEventListener('click', () => {
     partner.contentWindow.location.reload();
   } catch { /* 화면이 아직 준비되지 않았으면 건너뜀 */ }
 });
+
+I18n.applyDom();

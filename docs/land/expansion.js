@@ -6,7 +6,7 @@ function formatRemaining(ms) {
   const hours = Math.floor(total / 3600);
   const minutes = Math.floor((total % 3600) / 60);
   const seconds = String(total % 60).padStart(2, '0');
-  if (hours >= 24) return `${Math.floor(hours / 24)}일 ${hours % 24}시간`;
+  if (hours >= 24) return tr('land.expansion.0026',{v0:Math.floor(hours / 24),v1:hours % 24});
   if (hours > 0) return `${hours}:${String(minutes).padStart(2, '0')}:${seconds}`;
   return `${minutes}:${seconds}`;
 }
@@ -30,16 +30,16 @@ export function expansion({ T, camera, renderer, terrain, R, getState, perform, 
   backdrop.hidden = true;
   backdrop.setAttribute('role', 'dialog');
   backdrop.setAttribute('aria-modal', 'true');
-  backdrop.setAttribute('aria-label', '땅 확장');
+  backdrop.setAttribute('aria-label', tr('land.expansion.0027'));
   backdrop.addEventListener('click', (e) => { e.stopPropagation(); if (e.target === backdrop) close(); });
   const card = make('div', 'expand-card', backdrop);
-  make('h2', 'expand-title', card, '땅이 열리기까지');
+  make('h2', 'expand-title', card, tr('land.expansion.0028'));
   const countdown = make('p', 'expand-countdown', card);
-  make('p', 'expand-note', card, '시간이 지나면 자동으로 열려요');
+  make('p', 'expand-note', card, tr('land.expansion.0029'));
   const payButton = make('button', 'expand-pay', card);
   payButton.type = 'button';
   payButton.addEventListener('click', (e) => { e.stopPropagation(); pay(); });
-  const closeButton = make('button', 'expand-close', card, '닫기');
+  const closeButton = make('button', 'expand-close', card, tr('land.expansion.0030'));
   closeButton.type = 'button';
   closeButton.addEventListener('click', (e) => { e.stopPropagation(); close(); });
 
@@ -53,7 +53,7 @@ export function expansion({ T, camera, renderer, terrain, R, getState, perform, 
     if (backdrop.hidden) return;
     const cost = R.expandCost(getState(), Date.now());
     countdown.textContent = text;
-    payButton.textContent = `${cost.toLocaleString('ko-KR')} P로 지금 넓히기`;
+    payButton.textContent = tr('land.expansion.0031',{v0:I18n.number(cost)});
     payButton.disabled = getState().coins < cost;
   }
   function open() {
@@ -67,7 +67,6 @@ export function expansion({ T, camera, renderer, terrain, R, getState, perform, 
   function pay() {
     if (perform({ type: 'expand', paid: true })) {
       close();
-      notify('땅이 넓어졌어요!');
     }
   }
 

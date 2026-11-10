@@ -1,0 +1,121 @@
+/* 재화: 숫자에 맞춘 낮은 테두리. 터치 영역은 보이지 않게 넓힌다 */
+#point-entry,#cash-pill{position:relative;min-width:0;min-height:0;height:26px;padding:0 9px;gap:4px;border-radius:13px;font-size:12px}
+#point-entry .icon{width:14px;height:14px}
+#point-entry::after{content:"";position:absolute;inset:-9px -2px}
+.cash-mark{width:14px!important;height:14px!important;font-size:9px!important}
+
+/* 잠긴 땅 */
+.expand-timer{background:#c93a78}
+
+/* 하단: 편집 / 상점·씨앗 */
+#shop-open{order:1;margin-left:auto;margin-right:10px}
+.game-dock [data-tool="plant"]{order:2}
+
+.game-layer{position:absolute;inset:0;z-index:6;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:20px;background:#123d4066;pointer-events:auto}
+.game-layer[hidden]{display:none}
+.game-card{width:100%;max-width:330px;border-radius:12px;background:#fffdf8;color:#123d40}
+.game-card h2{margin:0;font-size:17px;font-weight:800}
+.shop-close{display:grid;place-items:center;width:44px;height:44px;margin:-8px -10px -8px 0;padding:0;border:0;background:none;color:#123d40;cursor:pointer}
+.shop-close .icon{width:20px;height:20px}
+
+.rarity-chip{display:inline-block;padding:1px 6px;border-radius:6px;font-size:10px;font-weight:800;color:#fff}
+.rarity-common{background:#6f8a8d}.rarity-uncommon{background:#23835f}.rarity-rare{background:#3a6fd0}.rarity-legendary{background:#c93a78}
+.rarity-border-common{--tone:#b9c7c9}.rarity-border-uncommon{--tone:#5fc29c}.rarity-border-rare{--tone:#6b9bf0}.rarity-border-legendary{--tone:#ff6ba8}
+
+/* 상점 */
+.shop-card{display:flex;flex-direction:column;max-height:82%;padding:16px}
+.shop-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.shop-wallet{margin-left:auto;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums}
+.shop-tabs{display:flex;gap:8px;margin-bottom:12px}
+.shop-tabs .edit-pill{flex:1}
+.shop-body{min-height:380px;overflow-y:auto}
+.shop-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #123d4014}
+.shop-row:last-child{border-bottom:0}
+.shop-thumb{flex:none;display:grid;place-items:center;width:52px;height:52px;overflow:hidden;border-radius:12px;background:#123d400f}
+.shop-thumb img{width:46px;height:46px;object-fit:contain}
+.shop-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.shop-copy strong{font-size:14px}
+.shop-copy small{font-size:11px;color:#123d40b3}
+.shop-buy{flex:none;min-width:72px;min-height:44px;padding:0 10px;border:0;border-radius:12px;background:#ffdc22;color:#123d40;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer;transition:transform .12s}
+.shop-buy:active,.gacha-pull:active,.detail-select:active,.detail-sub:active{transform:scale(.97)}
+.shop-buy:disabled,.gacha-pull:disabled,.gacha-again:disabled,.detail-select:disabled,.detail-sub:disabled{opacity:.45;cursor:not-allowed}
+
+/* 뽑기 기계 */
+.gacha-showcase{display:grid;place-items:center;height:150px;border-radius:12px;background:#64cfc1}
+.gacha-orb{position:relative;width:96px;height:112px;background:#ffdce8;box-shadow:inset -10px -12px 0 #ffb7d0}
+.gacha-orb-pet{border-radius:50% 50% 46% 46%/62% 62% 38% 38%}
+.gacha-orb-mark{position:absolute;width:18px;height:18px;border-radius:50%;background:#ff86b6}
+.gacha-orb-pet .gacha-orb-mark:nth-child(1){left:20px;top:30px}
+.gacha-orb-pet .gacha-orb-mark:nth-child(2){right:18px;top:52px;width:24px;height:24px}
+.gacha-orb-pet .gacha-orb-mark:nth-child(3){left:38px;bottom:16px;width:14px;height:14px}
+.gacha-orb-building{width:112px;height:100px;border-radius:12px;background:#ffdc22;box-shadow:inset -10px -10px 0 #eabf00}
+.gacha-orb-building .gacha-orb-mark{border-radius:0;background:#ff86b6}
+.gacha-orb-building .gacha-orb-mark:nth-child(1){left:46px;top:0;width:20px;height:100%}
+.gacha-orb-building .gacha-orb-mark:nth-child(2){left:0;top:40px;width:100%;height:20px}
+.gacha-orb-building .gacha-orb-mark:nth-child(3){left:38px;top:-14px;width:36px;height:16px;border-radius:8px}
+.gacha-lineup{display:flex;gap:6px;margin:10px 0;overflow-x:auto}
+.gacha-mini{flex:none;display:grid;place-items:center;width:44px;height:44px;overflow:hidden;border:2px solid var(--tone);border-radius:10px;background:#fff}
+.gacha-mini img{width:36px;height:36px;object-fit:contain}
+.gacha-mini .icon{width:20px;height:20px}
+.gacha-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gacha-pull{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:60px;border:0;border-radius:12px;background:#123d4012;color:#123d40;cursor:pointer;transition:transform .12s}
+.gacha-pull strong{font-size:15px}
+.gacha-pull small{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.gacha-pull-ten{background:#ffdc22}
+.gacha-promise{margin:8px 0 2px;font-size:12px;font-weight:750;text-align:center}
+.gacha-rates{margin:0;font-size:11px;color:#123d40b3;text-align:center}
+
+/* 뽑기 연출 */
+.gacha-stage{z-index:7;background:#0d2a2df2;padding:16px}
+.gacha-center{position:relative;display:grid;justify-items:center;gap:56px}
+.gacha-center .gacha-orb{transform-origin:50% 80%}
+.gacha-glow{position:absolute;top:-70px;width:250px;height:250px;border-radius:50%;opacity:0}
+.rarity-glow-common{background:radial-gradient(circle,#ffffff99,#fff0 70%)}
+.rarity-glow-uncommon{background:radial-gradient(circle,#7df0c3cc,#7df0c300 70%)}
+.rarity-glow-rare{background:radial-gradient(circle,#8db8ffdd,#8db8ff00 70%)}
+.rarity-glow-legendary{background:radial-gradient(circle,#ff8fc0,#ffdc2288 45%,#ffdc2200 72%)}
+.gacha-tap{position:relative;margin:0;color:#ffffffb3;font-size:12px}
+.gacha-flash{position:absolute;inset:0;background:#fff;pointer-events:none}
+.gacha-result{width:100%;max-width:350px;text-align:center;color:#fff}
+.gacha-result h2{margin:0 0 14px;font-size:18px;font-weight:800}
+.gacha-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.gacha-cards-one{grid-template-columns:minmax(0,200px);justify-content:center}
+.gacha-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;padding:6px 3px 7px;border:2px solid var(--tone);border-radius:12px;background:#fffdf8;color:#123d40}
+.gacha-card strong{max-width:100%;overflow:hidden;font-size:10px;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+.gacha-art{display:grid;place-items:center;width:100%;aspect-ratio:1}
+.gacha-art img{width:100%;height:100%;object-fit:contain}
+.gacha-art .icon{width:26px;height:26px}
+.gacha-cards-one .gacha-card{padding:16px 12px}
+.gacha-cards-one .gacha-card strong{font-size:16px}
+.gacha-card-shine{box-shadow:0 0 14px var(--tone)}
+.gacha-sure{position:absolute;z-index:1;top:-7px;right:-3px;padding:1px 5px;border-radius:6px;background:#ffdc22;color:#123d40;font-size:9px;font-weight:800}
+.gacha-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.gacha-confirm,.gacha-again{min-height:48px;border:0;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer}
+.gacha-confirm{background:#ffffff26;color:#fff}
+.gacha-again{background:#ffdc22;color:#123d40}
+
+/* 보유 아이템 팝업 */
+.detail-card,.zone-card{max-width:300px;padding:16px 20px 18px;text-align:center}
+.detail-head{display:flex;justify-content:flex-end;height:28px}
+.detail-art{display:grid;place-items:center;width:128px;height:128px;margin:0 auto 10px;border-radius:12px;background:#123d400f}
+.detail-art img{width:112px;height:112px;object-fit:contain}
+.detail-art .icon{width:44px;height:44px}
+.detail-meta{margin:6px 0 16px;font-size:12px}
+.detail-select{width:100%;min-height:48px;border:0;border-radius:12px;background:#ffdc22;color:#123d40;font-size:15px;font-weight:800;cursor:pointer}
+.detail-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.detail-sub{min-height:44px;padding:0 6px;border:0;border-radius:12px;background:#123d4012;color:#123d40;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;cursor:pointer}
+.detail-note{margin:8px 0 0;font-size:12px;color:#123d40b3}
+.detail-gift-title{padding-top:10px}
+.detail-friend{display:block;width:100%;margin-top:8px}
+.detail-back{width:100%;min-height:44px;margin-top:4px;border:0;background:none;color:#123d40;font-size:13px;cursor:pointer}
+.zone-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.zone-tile{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.zone-tile small{max-width:100%;overflow:hidden;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.zone-card h2{padding-top:6px}
+
+/* 바텀시트 보유 수량 */
+.edit-grid-tile{position:relative}
+.edit-count{position:absolute;right:4px;bottom:3px;min-width:18px;padding:0 4px;border-radius:9px;background:#123d40;color:#fff;font-size:11px;font-weight:800;line-height:18px;text-align:center;font-variant-numeric:tabular-nums}
+.edit-empty img{opacity:.4}
+.edit-empty-note{margin:18px 0;font-size:13px;color:#123d40b3;text-align:center}
+@media (prefers-reduced-motion:reduce){.shop-buy,.gacha-pull{transition:none}}
